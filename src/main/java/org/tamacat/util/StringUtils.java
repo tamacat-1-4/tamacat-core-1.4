@@ -8,6 +8,11 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.regex.Pattern;
+
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 public abstract class StringUtils {
 
@@ -131,7 +136,7 @@ public abstract class StringUtils {
 	public static String[] split(String value, String sep) {
 		String val = value != null ? value.trim() : "";
 		if (val.indexOf(sep) >= 0) {
-			return val.split("\\s*" + sep + "\\s*");
+			return val.split("\\s*" + Pattern.quote(sep) + "\\s*");
 		} else {
 			if (val.length() > 0) {
 				return new String[] { val };
@@ -162,6 +167,21 @@ public abstract class StringUtils {
 			return new Locale(language, country, variant);
 		} else {
 			return new Locale(str.trim());
+		}
+	}
+	
+	/**
+	 * Format JSON String
+	 * @sinse 1.4
+	 * @param json
+	 */
+	public static String formatJson(String json) {
+		try {
+			ScriptEngine js = new ScriptEngineManager().getEngineByName("JavaScript");
+			js.eval("function fmt(v){return JSON.stringify(JSON.parse(v),null,'  ')}");
+			return ((Invocable)js).invokeFunction("fmt", json).toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

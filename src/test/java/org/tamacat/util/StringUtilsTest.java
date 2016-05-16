@@ -185,6 +185,26 @@ public class StringUtilsTest {
 		assertArrayEquals(new String[]{}, StringUtils.split("", ","));
 		assertArrayEquals(new String[]{}, StringUtils.split(" ", ","));
 		assertArrayEquals(new String[]{}, StringUtils.split(null, ","));
+		
+		assertArrayEquals(new String[]{"1","2","3","4","5"}, StringUtils.split("1/2/3/4/5", "/"));
+		
+		//¥ * + . ? { } ( ) [ ] ^ $ - |
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1\\2\\3\\4\\5\\6\\7\\8\\9\\0", "\\"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1*2*3*4*5*6*7*8*9*0", "*"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1+2+3+4+5+6+7+8+9+0", "+"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1.2.3.4.5.6.7.8.9.0", "."));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1?2?3?4?5?6?7?8?9?0", "?"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1{2{3{4{5{6{7{8{9{0", "{"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1}2}3}4}5}6}7}8}9}0", "}"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1(2(3(4(5(6(7(8(9(0", "("));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1)2)3)4)5)6)7)8)9)0", ")"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1[2[3[4[5[6[7[8[9[0", "["));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1^2^3^4^5^6^7^8^9^0", "^"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1-2-3-4-5-6-7-8-9-0", "-"));
+		assertArrayEquals(new String[]{"1","2","3","4","5","6","7","8","9","0"}, StringUtils.split("1|2|3|4|5|6|7|8|9|0", "|"));
+		
+		
+
 	}
 	
 	@Test
