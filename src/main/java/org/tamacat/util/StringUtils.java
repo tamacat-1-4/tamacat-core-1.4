@@ -6,6 +6,9 @@ package org.tamacat.util;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -183,5 +186,39 @@ public abstract class StringUtils {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	/**
+	 * <p>RFC3986 URL Encoding.</p>
+	 * java.net.URLEncoder.encode() and replace string.
+	 *  <li> "+" -> "%20"</li>
+	 *  <li> "*" -> "%2A"</li>
+	 *  <li> "%7E" -> "~"</li>
+	 * @param value
+	 * @param charset
+	 * @return URL Encoded string (RFC3986)
+	 * @since 1.4
+	 */
+	public static String urlencode(String value, Charset charset) {
+		try {
+			return URLEncoder.encode(value, charset.name())
+					.replace("+", "%20").replace("*","%2A").replace("%7E","~");
+		} catch (UnsupportedEncodingException e) {
+		}
+		return "";
+	}
+	
+	/**
+	 * <p>RFC3986 URL Encoding (UTF-8)</p>
+	 * java.net.URLEncoder.encode() and replace string.
+	 *  <li> "+" -> "%20"</li>
+	 *  <li> "*" -> "%2A"</li>
+	 *  <li> "%7E" -> "~"</li>
+	 * @param value
+	 * @return URL Encoded string (RFC3986)
+	 * @since 1.4
+	 */
+	public static String urlencode(String value) {
+		return urlencode(value, StandardCharsets.UTF_8);
 	}
 }

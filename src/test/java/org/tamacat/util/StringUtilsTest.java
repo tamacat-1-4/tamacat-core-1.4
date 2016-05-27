@@ -223,4 +223,15 @@ public class StringUtilsTest {
 		assertEquals(null, StringUtils.getLocale(""));
 		assertEquals(null, StringUtils.getLocale(" "));
 	}
+	
+	@Test
+	public void testUrlencode() {
+		assertEquals("%21%22%23%24%25%26%27%28%29%3D-%5E%7C%5C%5B%5D%7B%7D%60%40%2A%3A%3B%2B%3C%3E%2C%2F%3F",
+			StringUtils.urlencode("!\"#$%&'()=-^|\\[]{}`@*:;+<>,/?"));
+		assertEquals("._~", StringUtils.urlencode("._~"));
+		
+		assertEquals("%2B", StringUtils.urlencode("+"));
+		assertEquals("%20", StringUtils.urlencode(" "));
+		
+	}
 }
