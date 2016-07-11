@@ -75,7 +75,9 @@ public class MessageDigestInputStreamTest {
 		assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709", in.getDigest());
 
 		try {
-			new MessageDigestInputStream(bi, "XXXX");
+			IOUtils.close(in);
+		
+			in = new MessageDigestInputStream(bi, "XXXX");
 			fail();
 		} catch (MessageDigestException e) {
 			assertNotNull(e.getMessage());

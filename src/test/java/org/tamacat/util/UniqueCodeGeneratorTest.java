@@ -39,6 +39,12 @@ public class UniqueCodeGeneratorTest {
 			}
 		}
 	}
+	
+	@Test
+	public void testGenerateDelimiter() {
+		assertTrue(UniqueCodeGenerator.generate(false).indexOf("-")>=0);
+		assertTrue(UniqueCodeGenerator.generate(true).indexOf("-")==-1);
+	}
 
 	@Test
 	public void testGenerateString() {

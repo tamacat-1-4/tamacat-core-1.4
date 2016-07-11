@@ -6,6 +6,7 @@ package org.tamacat.util;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -187,13 +188,14 @@ public abstract class StringUtils {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/**
 	 * <p>RFC3986 URL Encoding.</p>
 	 * java.net.URLEncoder.encode() and replace string.
-	 *  <li> "+" -> "%20"</li>
 	 *  <li> "*" -> "%2A"</li>
-	 *  <li> "%7E" -> "~"</li>
+	 *  <li> "-" -> "%2D"</li>
+	 *  <li> "+" -> "%20"</li>
+	 *  <li> "%7E" -> "~"</li>  
 	 * @param value
 	 * @param charset
 	 * @return URL Encoded string (RFC3986)
@@ -202,7 +204,7 @@ public abstract class StringUtils {
 	public static String urlencode(String value, Charset charset) {
 		try {
 			return URLEncoder.encode(value, charset.name())
-					.replace("+", "%20").replace("*","%2A").replace("%7E","~");
+					.replace("*", "%2A").replace("-", "%2D").replace("+", "%20").replace("%7E", "~");
 		} catch (UnsupportedEncodingException e) {
 		}
 		return "";
@@ -220,5 +222,40 @@ public abstract class StringUtils {
 	 */
 	public static String urlencode(String value) {
 		return urlencode(value, StandardCharsets.UTF_8);
+	}
+	
+	/**
+	 * <p>RFC3986 URL Decoding.</p>
+	 * java.net.URLDecoder.decode() and replace string.
+	 *  <li> "%2A" -> "*"</li>
+	 *  <li> "%2D" -> "-"</li>
+	 *  <li> "%20" -> "+"</li>
+	 * @param value
+	 * @param charset
+	 * @return URL Decoded string (RFC3986)
+	 * @since 1.4
+	 */
+	public static String urldecode(String value, Charset charset) {
+		try {
+			return URLDecoder.decode(
+				value.replace("%2A","*").replace("%2D","-").replace("%20","+"),
+				charset.name());
+		} catch (UnsupportedEncodingException e) {
+		}
+		return "";
+	}
+	
+	/**
+	 * <p>RFC3986 URL Decoding (UTF-8)</p>
+	 * java.net.URLDecoder.decode() and replace string.
+	 *  <li> "%2A" -> "*"</li>
+	 *  <li> "%2D" -> "-"</li>
+	 *  <li> "%20" -> "+"</li>
+	 * @param value
+	 * @return URL Decoded string (RFC3986)
+	 * @since 1.4
+	 */
+	public static String urldecode(String value) {
+		return urldecode(value, StandardCharsets.UTF_8);
 	}
 }
