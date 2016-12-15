@@ -26,6 +26,7 @@ public class Log4jDiagnosticContext implements DiagnosticContext {
 	@Override
 	public void remove() {
 		NDC.remove();
+		MDC.clear();
 	}
 	
 	@Override
