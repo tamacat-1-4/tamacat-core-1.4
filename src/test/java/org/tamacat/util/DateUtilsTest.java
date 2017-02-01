@@ -10,47 +10,53 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class DateUtilsTest {
 
+	@Before
+	public void setUp() throws Exception {
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+	}
+	
 	@Test
 	public void testGetTime() {
-		System.out.println(DateUtils.getTime(new Date(), "yyyy-MM-dd HH:mm:ss,S"));
+		assertEquals("2011-01-01 00:00:00,000", DateUtils.getTime(new Date(1293840000000L), "yyyy-MM-dd HH:mm:ss,SSS"));
 		assertTrue(true);
 	}
 
 	@Test
 	public void testGetTimeLocale() {
-		System.out.println(DateUtils.getTime(new Date(), "yyyy-MM-dd HH:mm:ss,S", Locale.US));
+		assertEquals("2011-01-01 00:00:00,000", DateUtils.getTime(new Date(1293840000000L), "yyyy-MM-dd HH:mm:ss,SSS", Locale.US));
 		assertTrue(true);
 	}
 	
 	@Test
 	public void testGetTimeLocaleTimeZone() {
-		System.out.println(DateUtils.getTime(new Date(), "yyyy-MM-dd HH:mm:ss,S", Locale.US, TimeZone.getDefault()));
+		assertEquals("2011-01-01 00:00:00,000", DateUtils.getTime(new Date(1293840000000L), "yyyy-MM-dd HH:mm:ss,SSS", Locale.US, TimeZone.getDefault()));
 		assertTrue(true);
 	}
 
 	@Test
 	public void testGetTimestamp() {
-		DateUtils.getTimestamp("yyyy-MM-dd HH:mm:ss,S");
+		DateUtils.getTimestamp("yyyy-MM-dd HH:mm:ss,SSS");
 	}
 
 	@Test
 	public void testGetTimestampLocale() {
-		DateUtils.getTimestamp("yyyy-MM-dd HH:mm:ss,S", Locale.US);
+		DateUtils.getTimestamp("yyyy-MM-dd HH:mm:ss,SSS", Locale.US);
 	}
 
 	@Test
 	public void testParseTime() {
-		System.out.println(DateUtils.parse("2011-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss"));
+		assertEquals(new Date(1293840000000L), DateUtils.parse("2011-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss"));
 		assertTrue(true);
 	}
 
 	@Test
 	public void testParseTimeZone() {
-		System.out.println(DateUtils.parse("2011-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss", Locale.US, TimeZone.getTimeZone("GMT")));
+		assertEquals(new Date(1293840000000L), DateUtils.parse("2011-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss", Locale.US, TimeZone.getTimeZone("GMT")));
 		assertTrue(true);
 	}
 
