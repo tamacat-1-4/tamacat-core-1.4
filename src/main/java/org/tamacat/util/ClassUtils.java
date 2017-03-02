@@ -6,6 +6,7 @@ package org.tamacat.util;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -370,5 +372,38 @@ public abstract class ClassUtils {
 			throw new ClassUtilsException("method is null.");
 		invoke(method, instance, params);
 		return method;
+	}
+	
+	
+	/**
+	 * Find Declared Fields in Class.
+	 * @since 1.4
+	 */
+	static public Map<String, Field> findDeclaredFields(Class<?> type) {
+		try {
+			Field[] fields = type.getDeclaredFields();
+			Map<String, Field> findFields = CollectionUtils.newLinkedHashMap();
+			for (Field field : fields) {
+				findFields.put(field.getName(), field);
+			}
+			return findFields;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	
+	/**
+	 * Field setter injection.
+	 * @since 1.4
+	 */
+	static public <T> T setParameter(T instance, Field field, Object value) {
+		if (instance == null) return null;
+		try {
+			field.setAccessible(true);
+			field.set(instance, value);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			throw new ClassUtilsException(e);
+		}
+		return instance;
 	}
 }
