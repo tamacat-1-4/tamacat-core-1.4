@@ -18,9 +18,9 @@
 	</licenses>
 
 	<scm>
-		<url>http://svn.code.sf.net/p/tamacat/code/trunk/tamacat-core</url>
-		<connection>scm:svn:http://svn.code.sf.net/p/tamacat/code/trunk/tamacat-core</connection>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/tamacat/code/trunk/tamacat-core</developerConnection>
+		<url>http://svn.code.sf.net/p/tamacat/code/branches/tamacat-core-1.4</url>
+		<connection>scm:svn:http://svn.code.sf.net/p/tamacat/code/branches/tamacat-core-1.4</connection>
+		<developerConnection>scm:svn:https://svn.code.sf.net/p/tamacat/code/branches/tamacat-core-1.4</developerConnection>
 	</scm>
 
 	<dependencies>
@@ -76,7 +76,15 @@
 					<archive>
 						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 						<manifestEntries>
+							<Specification-Title>${project.name}</Specification-Title>
+							<Specification-Version>${project.version}</Specification-Version>
+							<Specification-Vendor>tamacat.org</Specification-Vendor>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Vendor>tamacat.org</Implementation-Vendor>
+							<Implementation-Vendor-Id>org.tamacat</Implementation-Vendor-Id>
 							<Built-By>tamacat.org</Built-By>
+							<Built-Time>${maven.build.timestamp}</Built-Time>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -132,4 +140,8 @@
 			<url>http://tamacat.org/maven2/</url>
 		</repository>
 	</repositories>
+
+	<properties>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
+	</properties>
 </project>
