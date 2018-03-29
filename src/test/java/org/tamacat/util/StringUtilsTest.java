@@ -222,6 +222,14 @@ public class StringUtilsTest {
 	}
 	
 	@Test
+	public void testFormatJson() {
+		assertEquals("", StringUtils.formatJson(""));
+		assertEquals("{}", StringUtils.formatJson("{}"));
+		assertEquals("[]", StringUtils.formatJson("[]"));
+		assertEquals("{  \"debug\": true}", StringUtils.formatJson("{\"debug\":true}").replace("\n",""));
+	}
+	
+	@Test
 	public void testUrlencode() {
 		assertEquals(StringUtils.urlencode("!\"#$%&'()=-^|\\[]{}`@*:;+<>,/?~_`."),
 			"%21%22%23%24%25%26%27%28%29%3D%2D%5E%7C%5C%5B%5D%7B%7D%60%40%2A%3A%3B%2B%3C%3E%2C%2F%3F~_%60.");

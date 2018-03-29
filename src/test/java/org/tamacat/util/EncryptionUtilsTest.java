@@ -20,12 +20,31 @@ public class EncryptionUtilsTest {
 	public void testGetMessageDigest() {
 		assertEquals("9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08",
 			EncryptionUtils.getMessageDigest("test", "SHA-256"));
+		
+		try {
+			EncryptionUtils.getMessageDigest("test", "SHA123");
+			fail();
+		} catch (Exception e) {
+			//java.lang.IllegalArgumentException: No such algorithm.
+			//Caused by: java.security.NoSuchAlgorithmException: Algorithm SHA123 not available
+			assertTrue( e instanceof IllegalArgumentException);
+		}
 	}
 	
 	@Test
 	public void testGetMac() {
 		assertEquals("D8402BD365A34B4D34729C3FA420818B2913DE85533AE9E8B22434BEF7AC7BBA",
 			EncryptionUtils.getMac("test", "password", "HmacSHA256"));
+		
+		try {
+			EncryptionUtils.getMac("test", "password", "HmacSHA123");
+			fail();
+		} catch (Exception e) {
+			//e.printStackTrace();
+			//java.lang.IllegalArgumentException: No such algorithm.
+			//Caused by: java.security.NoSuchAlgorithmException: Algorithm HmacSHA123 not available
+			assertTrue( e instanceof IllegalArgumentException);
+		}
 	}
 
 	@Test
@@ -34,6 +53,22 @@ public class EncryptionUtilsTest {
 			StringUtils.dump(EncryptionUtils.getSecretKey(password, salt, 1024, 128).getEncoded()));
 	}
 
+	@Test
+	public void testGetSecretKeyAlgorithm() {
+		assertEquals("ffffff8130fffffff94b686f9202fdffffffb7ffffff9ffffffff7ffffff97744f",
+			StringUtils.dump(EncryptionUtils.getSecretKey("PBKDF2WithHmacSHA1", password, salt, 1024, 128).getEncoded()));
+		try {
+			assertEquals("ffffff8130fffffff94b686f9202fdffffffb7ffffff9ffffffff7ffffff97744f",
+				StringUtils.dump(EncryptionUtils.getSecretKey("", password, salt, 1024, 128).getEncoded()));
+			fail();
+		} catch (Exception e) {
+			//java.lang.IllegalArgumentException: Not a valid encryption algorithm
+			//Caused by: java.security.NoSuchAlgorithmException:  SecretKeyFactory not available
+			assertTrue(e instanceof IllegalArgumentException);
+		}
+		//
+	}
+	
 	@Test
 	public void testEncryptByteArrays() {
 		StringBuilder data = new StringBuilder();

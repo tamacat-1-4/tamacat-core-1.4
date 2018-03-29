@@ -180,6 +180,7 @@ public abstract class StringUtils {
 	 * @param json
 	 */
 	public static String formatJson(String json) {
+		if (StringUtils.isEmpty(json)) return "";
 		try {
 			ScriptEngine js = new ScriptEngineManager().getEngineByName("JavaScript");
 			js.eval("function fmt(v){return JSON.stringify(JSON.parse(v),null,'  ')}");

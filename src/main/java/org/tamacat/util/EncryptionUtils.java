@@ -33,7 +33,8 @@ public class EncryptionUtils {
 	static final Log LOG = LogFactory.getLog(EncryptionUtils.class);
 	
 	static final String AES_ALGORITHM = "AES/CBC/PKCS5Padding";
-	static final String SHA1_ALGORITHM = "PBKDF2WithHmacSHA1";
+	static final String PBKDF2_HMAC_SHA1_ALGORITHM = "PBKDF2WithHmacSHA1";
+	static final String PBKDF2_HMAC_SHA256_ALGORITHM = "PBKDF2WithHmacSHA256";
 
 	/**
 	 * Get a message digest.
@@ -99,12 +100,35 @@ public class EncryptionUtils {
 		return new CipherInputStream(in, decryptor);
 	}
 
+	/**
+	 * PBKDF2WithHmacSHA1/AES
+	 * @param password
+	 * @param salt
+	 * @param iterationCount
+	 * @param keyLength
+	 * @return SecretKey
+	 */
 	public static SecretKey getSecretKey(String password, String salt, int iterationCount, int keyLength) {
 		PBEKeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterationCount, keyLength);
-		SecretKey secretKey1 = generateSecret(SHA1_ALGORITHM, keySpec);
+		SecretKey secretKey1 = generateSecret(PBKDF2_HMAC_SHA1_ALGORITHM, keySpec);
 		return new SecretKeySpec(secretKey1.getEncoded(), "AES");
 	}
 
+	/**
+	 * 
+	 * @param algorithm
+	 * @param password
+	 * @param salt
+	 * @param iterationCount
+	 * @param keyLength
+	 * @return
+	 */
+	public static SecretKey getSecretKey(String algorithm, String password, String salt, int iterationCount, int keyLength) {
+		PBEKeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterationCount, keyLength);
+		SecretKey secretKey1 = generateSecret(algorithm, keySpec);
+		return new SecretKeySpec(secretKey1.getEncoded(), "AES");
+	}
+	
 	public static long getEncryptedLength(long len) {
 		return len + (16 - (len % 16));
 	}
