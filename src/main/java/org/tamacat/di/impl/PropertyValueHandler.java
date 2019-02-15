@@ -50,7 +50,7 @@ public class PropertyValueHandler {
 		}
 
 		public String[] convert(String param) {
-			return new String[] { param };
+			return StringUtils.split(replaceEnvironmentVariable(param), ",");
 		}
 	}
 
@@ -60,7 +60,7 @@ public class PropertyValueHandler {
 		}
 
 		public Integer convert(String param) {
-			return Integer.parseInt(param);
+			return Integer.parseInt(replaceEnvironmentVariable(param));
 		}
 	}
 
@@ -70,7 +70,7 @@ public class PropertyValueHandler {
 		}
 
 		public Long convert(String param) {
-			return Long.parseLong(param);
+			return Long.parseLong(replaceEnvironmentVariable(param));
 		}
 	}
 
@@ -80,7 +80,7 @@ public class PropertyValueHandler {
 		}
 
 		public Float convert(String param) {
-			return Float.parseFloat(param);
+			return Float.parseFloat(replaceEnvironmentVariable(param));
 		}
 	}
 
@@ -90,7 +90,7 @@ public class PropertyValueHandler {
 		}
 
 		public Double convert(String param) {
-			return Double.parseDouble(param);
+			return Double.parseDouble(replaceEnvironmentVariable(param));
 		}
 	}
 
@@ -100,7 +100,7 @@ public class PropertyValueHandler {
 		}
 
 		public Character convert(String param) {
-			return Character.valueOf(param.charAt(0));
+			return Character.valueOf(replaceEnvironmentVariable(param).charAt(0));
 		}
 	}
 
@@ -110,9 +110,10 @@ public class PropertyValueHandler {
 		}
 
 		public Boolean convert(String param) {
-			if ("true".equalsIgnoreCase(param)) {
+			String value = replaceEnvironmentVariable(param);
+			if ("true".equalsIgnoreCase(value)) {
 				return Boolean.TRUE.booleanValue();
-			} else if ("false".equalsIgnoreCase(param)) {
+			} else if ("false".equalsIgnoreCase(value)) {
 				return Boolean.FALSE.booleanValue();
 			} else {
 				throw new RuntimeException("can not convert boolean.");
@@ -127,7 +128,7 @@ public class PropertyValueHandler {
 		}
 
 		public Class<?> convert(String param) {
-			return ClassUtils.forName(param);
+			return ClassUtils.forName(replaceEnvironmentVariable(param));
 		}
 	}
 
@@ -138,7 +139,7 @@ public class PropertyValueHandler {
 		}
 
 		public Class<?>[] convert(String param) {
-			return new Class[] { ClassUtils.forName(param) };
+			return new Class[] { ClassUtils.forName(replaceEnvironmentVariable(param)) };
 		}
 	}
 
@@ -148,7 +149,7 @@ public class PropertyValueHandler {
 		}
 
 		public Object convert(String param) {
-			return param;
+			return replaceEnvironmentVariable(param);
 		}
 	}
 

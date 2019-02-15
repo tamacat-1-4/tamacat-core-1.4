@@ -259,4 +259,18 @@ public abstract class StringUtils {
 	public static String urldecode(String value) {
 		return urldecode(value, StandardCharsets.UTF_8);
 	}
+	
+	/**
+	 * Replace a environment variable from setter injection value.
+	 * ex. ${USER_HOME} -> /home/testuser
+	 * @param value
+	 * @since 1.4-20190213
+	 */
+	public static String envValue(String value) {
+		if (StringUtils.isNotEmpty(value) && value.startsWith("${") && value.endsWith("}")) {
+			String key = value.substring(2, value.length()-1);
+			return System.getenv(key);
+		}
+		return value;
+	}
 }
