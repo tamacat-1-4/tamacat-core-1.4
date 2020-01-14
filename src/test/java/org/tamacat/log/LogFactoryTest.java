@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.tamacat.log.impl.Log4jDiagnosticContext;
 import org.tamacat.log.impl.Log4jLogger;
 import org.tamacat.log.impl.NoneDiagnosticContext;
+import org.tamacat.log.impl.Slf4jLogger;
 import org.tamacat.util.ClassUtils;
 
 public class LogFactoryTest {
@@ -50,7 +51,7 @@ public class LogFactoryTest {
 		assertTrue(logger.isWarnEnabled());
 		assertTrue(logger.isInfoEnabled());
 		assertTrue(logger.isDebugEnabled());
-		assertTrue(logger.isTraceEnabled());
+		assertFalse(logger.isTraceEnabled());
 	}
 
 	@Test
@@ -62,7 +63,7 @@ public class LogFactoryTest {
 
 	@Test
 	public void testLoadLogger() throws Exception {
-		assertTrue(LogFactory.SELF.loadLogger("test") instanceof Log4jLogger);
+		assertTrue(LogFactory.SELF.loadLogger("test") instanceof Slf4jLogger);
 
 		Log l1 = LogFactory.SELF.loadLogger("test");
 		Log l2 = LogFactory.SELF.loadLogger("test");

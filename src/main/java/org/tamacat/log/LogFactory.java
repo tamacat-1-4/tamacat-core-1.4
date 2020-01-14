@@ -9,10 +9,14 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.tamacat.log.impl.JDKLogger;
+import org.tamacat.log.impl.Log4j2DiagnosticContext;
+import org.tamacat.log.impl.Log4j2Logger;
 import org.tamacat.log.impl.Log4jDiagnosticContext;
 import org.tamacat.log.impl.Log4jLogger;
 import org.tamacat.log.impl.NoneDiagnosticContext;
 import org.tamacat.log.impl.SimpleLogger;
+import org.tamacat.log.impl.Slf4jDiagnosticContext;
+import org.tamacat.log.impl.Slf4jLogger;
 import org.tamacat.util.ClassUtils;
 import org.tamacat.util.PropertyUtils;
 
@@ -48,6 +52,8 @@ public class LogFactory {
 	}
 
 	static final String LOG4J_CLASS = "org.apache.log4j.Logger";
+    static final String SLF4J_CLASS = "org.slf4j.Logger";
+
 	private LogFactory(){}
 	static LogFactory SELF = new LogFactory();
 
@@ -67,6 +73,10 @@ public class LogFactory {
 			}
 		} catch (Exception e) {
 		}
+        Class<?> slf4jClass = ClassUtils.forName(SLF4J_CLASS, loader);
+        if (slf4jClass != null) {
+            return new Slf4jLogger(name);
+        }
 		Class<?> loggerClass = ClassUtils.forName(LOG4J_CLASS, loader);
 		if (loggerClass != null) {
 			return new Log4jLogger(name);
@@ -75,13 +85,17 @@ public class LogFactory {
 		}
 	}
 
-	public static DiagnosticContext getDiagnosticContext(Log logger) {
-		if (logger instanceof Log4jLogger) {
-			return new Log4jDiagnosticContext();
-		} else {
-			return new NoneDiagnosticContext();
-		}
-	}
+    public static DiagnosticContext getDiagnosticContext(Log logger) {
+    	if (logger instanceof Slf4jLogger) {
+            return new Slf4jDiagnosticContext();
+    	} else if (logger instanceof Log4j2Logger) {
+            return new Log4j2DiagnosticContext();
+        } else if (logger instanceof Log4jLogger) {
+            return new Log4jDiagnosticContext();
+        } else {
+            return new NoneDiagnosticContext();
+        }
+    }
 
 	public void setClassLoader(ClassLoader loader) {
 		this.loader = loader;
